@@ -12,6 +12,8 @@ public final class Match {
 
     private List<PlayerId> playersB;
 
+    private ChampionshipId championshipId;
+
     private long timestamp;
 
     private int result;
@@ -72,5 +74,13 @@ public final class Match {
 
     public void setPrediction(int prediction) {
         this.prediction = prediction;
+    }
+
+    public ChampionshipId getChampionshipId() {
+        return championshipId;
+    }
+
+    public void setChampionshipId(ChampionshipId championshipId) {
+        this.championshipId = championshipId;
     }
 }
