@@ -2,11 +2,11 @@ package com.golhero.domain.model;
 
 import java.util.Objects;
 
-public final class TeamId {
+public final class MatchId {
 
     private final int value;
 
-    public TeamId(int value) {
+    public MatchId(int value) {
         this.value = value;
     }
 
@@ -18,8 +18,8 @@ public final class TeamId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TeamId teamId = (TeamId) o;
-        return value == teamId.value;
+        MatchId matchId = (MatchId) o;
+        return value == matchId.value;
     }
 
     @Override
@@ -29,7 +29,7 @@ public final class TeamId {
 
     @Override
     public String toString() {
-        return "TeamId{" +
+        return "MatchId{" +
                 "value=" + value +
                 '}';
     }
