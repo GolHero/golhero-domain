@@ -1,5 +1,7 @@
 package com.golhero.query.model;
 
+import java.util.Objects;
+
 public final class MatchDto {
 
     private final long id;
@@ -73,6 +75,19 @@ public final class MatchDto {
 
     public long getWinnerId() {
         return winnerId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MatchDto matchDto = (MatchDto) o;
+        return id == matchDto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

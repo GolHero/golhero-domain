@@ -1,6 +1,7 @@
 package com.golhero.query.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public final class TeamDto {
 
@@ -26,6 +27,19 @@ public final class TeamDto {
 
     public List<PlayerDto> getPlayers() {
         return List.copyOf(players);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamDto teamDto = (TeamDto) o;
+        return id == teamDto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

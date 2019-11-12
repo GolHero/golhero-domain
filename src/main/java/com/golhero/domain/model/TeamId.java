@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public final class TeamId {
 
-    private final int value;
+    private final long value;
 
-    public TeamId(int value) {
+    public TeamId(long value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
