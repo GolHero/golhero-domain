@@ -1,6 +1,9 @@
 package com.golhero.domain.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public final class Match {
@@ -11,37 +14,19 @@ public final class Match {
 
     private TeamId teamB;
 
-    private List<PlayerId> playersA;
+    private Map<TeamId, List<PlayerId>> players;
 
-    private List<PlayerId> playersB;
+    private Map<TeamId, List<PlayerId>> reservePlayers;
 
     private ChampionshipId championshipId;
+
+    private Map<TeamId, List<Substitution>> substitutions;
 
     private long timestamp;
 
     private int result;
 
     private int prediction;
-
-    public Match(MatchId id,
-                 TeamId teamA,
-                 TeamId teamB,
-                 List<PlayerId> playersA,
-                 List<PlayerId> playersB,
-                 ChampionshipId championshipId,
-                 long timestamp,
-                 int result,
-                 int prediction) {
-        this.id = id;
-        this.teamA = teamA;
-        this.teamB = teamB;
-        this.playersA = playersA;
-        this.playersB = playersB;
-        this.championshipId = championshipId;
-        this.timestamp = timestamp;
-        this.result = result;
-        this.prediction = prediction;
-    }
 
     public Match(MatchId id,
                  TeamId teamA,
@@ -55,6 +40,48 @@ public final class Match {
         this.championshipId = championshipId;
         this.timestamp = timestamp;
         this.result = result;
+        this.players = new HashMap<>();
+        this.players.put(teamA, new ArrayList<>());
+        this.players.put(teamB, new ArrayList<>());
+        this.reservePlayers = new HashMap<>();
+        this.reservePlayers.put(teamA, new ArrayList<>());
+        this.reservePlayers.put(teamB, new ArrayList<>());
+        this.substitutions = new HashMap<>();
+        this.substitutions.put(teamA, new ArrayList<>());
+        this.substitutions.put(teamB, new ArrayList<>());
+    }
+
+    public void addSubstitution(TeamId teamId, PlayerId playerIn, PlayerId playerOut) {
+        if(!teamA.equals(teamId) && !teamB.equals(teamId)) {
+            throw new IllegalArgumentException("teamId must be in the match");
+        }
+
+        List<PlayerId> players = this.players.get(teamId);
+        List<PlayerId> reservePlayers = this.reservePlayers.get(teamId);
+
+        if (!reservePlayers.contains(playerIn)) {
+            throw new IllegalArgumentException("Player in must be in reserve players");
+        }
+
+        if (reservePlayers.contains(playerOut)) {
+            throw new IllegalArgumentException("Player out must not be in reserve players");
+        }
+
+        if (!players.contains(playerIn) || !players.contains(playerOut)) {
+            throw new IllegalArgumentException("player in and player out must be in team");
+        }
+
+        List<Substitution> substitutions = this.substitutions.get(teamId);
+
+        long count = substitutions.stream()
+                .filter(s -> s.getPlayerIn().equals(playerIn) || s.getPlayerOut().equals(playerOut))
+                .count();
+
+        if (count > 0) {
+            throw new IllegalArgumentException("Illegal substitution");
+        }
+
+        substitutions.add(new Substitution(teamId, playerIn, playerOut));
     }
 
     public MatchId getId() {
@@ -82,19 +109,11 @@ public final class Match {
     }
 
     public List<PlayerId> getPlayersA() {
-        return List.copyOf(playersA);
-    }
-
-    public void setPlayersA(List<PlayerId> playersA) {
-        this.playersA = List.copyOf(playersA);
+        return List.copyOf(players.get(teamA));
     }
 
     public List<PlayerId> getPlayersB() {
-        return List.copyOf(playersB);
-    }
-
-    public void setPlayersB(List<PlayerId> playersB) {
-        this.playersB = List.copyOf(playersB);
+        return List.copyOf(players.get(teamB));
     }
 
     public long getTimestamp() {

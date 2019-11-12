@@ -1,7 +1,7 @@
 package com.golhero.query.model;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class TeamDto {
 
@@ -9,12 +9,12 @@ public final class TeamDto {
 
     private final String name;
 
-    private final List<PlayerDto> players;
+    private final Set<PlayerDto> players;
 
-    public TeamDto(long id, String name, List<PlayerDto> players) {
+    public TeamDto(long id, String name, Set<PlayerDto> players) {
         this.id = id;
         this.name = name;
-        this.players = List.copyOf(players);
+        this.players = Set.copyOf(players);
     }
 
     public long getId() {
@@ -25,8 +25,8 @@ public final class TeamDto {
         return name;
     }
 
-    public List<PlayerDto> getPlayers() {
-        return List.copyOf(players);
+    public Set<PlayerDto> getPlayers() {
+        return Set.copyOf(players);
     }
 
     @Override
